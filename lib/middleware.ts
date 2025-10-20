@@ -8,10 +8,10 @@ export interface AuthRequest extends NextRequest {
 /**
  * Middleware to authenticate JWT tokens from cookies or Authorization header
  */
-export function authenticate(
-  handler: (req: AuthRequest) => Promise<NextResponse>
+export function authenticate<T = any>(
+  handler: (req: AuthRequest, context?: T) => Promise<NextResponse>
 ) {
-  return async (req: AuthRequest): Promise<NextResponse> => {
+  return async (req: AuthRequest, context?: T): Promise<NextResponse> => {
     try {
       // Get token from cookie or Authorization header
       const tokenFromCookie = req.cookies.get('token')?.value;
@@ -43,7 +43,7 @@ export function authenticate(
       req.user = decoded;
 
       // Call the original handler
-      return handler(req);
+      return handler(req, context);
     } catch (error) {
       return NextResponse.json(
         { success: false, message: 'Authentication failed' },
@@ -56,10 +56,10 @@ export function authenticate(
 /**
  * Optional authentication - doesn't require token but attaches user if present
  */
-export function optionalAuth(
-  handler: (req: AuthRequest) => Promise<NextResponse>
+export function optionalAuth<T = any>(
+  handler: (req: AuthRequest, context?: T) => Promise<NextResponse>
 ) {
-  return async (req: AuthRequest): Promise<NextResponse> => {
+  return async (req: AuthRequest, context?: T): Promise<NextResponse> => {
     try {
       const tokenFromCookie = req.cookies.get('token')?.value;
       const authHeader = req.headers.get('authorization');
@@ -76,10 +76,10 @@ export function optionalAuth(
         }
       }
 
-      return handler(req);
+      return handler(req, context);
     } catch (error) {
       // Continue without authentication
-      return handler(req);
+      return handler(req, context);
     }
   };
 }
