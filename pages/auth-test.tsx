@@ -11,23 +11,32 @@ export default function AuthTest() {
   const [user, setUser] = useState<User | null>(null);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [testEmail, setTestEmail] = useState('test@example.com');
-  const [testPassword] = useState('password123');
+  
+  // Login form state
+  const [loginEmail, setLoginEmail] = useState('john@fixbuddy.com');
+  const [loginPassword, setLoginPassword] = useState('password123');
+  
+  // Register form state
+  const [registerUsername, setRegisterUsername] = useState('');
+  const [registerEmail, setRegisterEmail] = useState('');
+  const [registerPassword, setRegisterPassword] = useState('password123');
 
   // Test Registration
   const testRegister = async () => {
+    if (!registerUsername || !registerEmail || !registerPassword) {
+      setMessage('❌ Please fill in all fields');
+      return;
+    }
+    
     setLoading(true);
     try {
-      const newEmail = `test${Date.now()}@example.com`;
-      setTestEmail(newEmail); // Save for later login
-      
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: `testuser${Date.now()}`,
-          email: newEmail,
-          password: testPassword
+          username: registerUsername,
+          email: registerEmail,
+          password: registerPassword
         })
       });
       const data = await response.json();
@@ -35,6 +44,10 @@ export default function AuthTest() {
       if (data.success) {
         setMessage(`✅ Registration successful! User: ${data.user.username}`);
         setUser(data.user);
+        // Clear form
+        setRegisterUsername('');
+        setRegisterEmail('');
+        setRegisterPassword('password123');
       } else {
         setMessage(`❌ ${data.message}`);
       }
@@ -46,14 +59,19 @@ export default function AuthTest() {
 
   // Test Login
   const testLogin = async () => {
+    if (!loginEmail || !loginPassword) {
+      setMessage('❌ Please enter email and password');
+      return;
+    }
+    
     setLoading(true);
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email: testEmail,
-          password: testPassword
+          email: loginEmail,
+          password: loginPassword
         })
       });
       const data = await response.json();
@@ -144,41 +162,168 @@ export default function AuthTest() {
         </div>
       )}
 
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', marginBottom: '30px' }}>
+        {/* Login Form */}
+        <div style={{
+          padding: '24px',
+          backgroundColor: '#f8f9fa',
+          borderRadius: '8px',
+          border: '1px solid #dee2e6'
+        }}>
+          <h3 style={{ fontWeight: 'bold', marginBottom: '16px', fontSize: '20px' }}>
+            🔑 Login
+          </h3>
+          
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>
+              Email:
+            </label>
+            <input
+              type="email"
+              value={loginEmail}
+              onChange={(e) => setLoginEmail(e.target.value)}
+              placeholder="john@fixbuddy.com"
+              style={{
+                width: '100%',
+                padding: '10px',
+                border: '1px solid #ced4da',
+                borderRadius: '6px',
+                fontSize: '16px'
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>
+              Password:
+            </label>
+            <input
+              type="password"
+              value={loginPassword}
+              onChange={(e) => setLoginPassword(e.target.value)}
+              placeholder="password123"
+              style={{
+                width: '100%',
+                padding: '10px',
+                border: '1px solid #ced4da',
+                borderRadius: '6px',
+                fontSize: '16px'
+              }}
+            />
+          </div>
+
+          <button
+            onClick={testLogin}
+            disabled={loading}
+            style={{
+              width: '100%',
+              padding: '12px 24px',
+              backgroundColor: '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              fontSize: '16px',
+              fontWeight: '500'
+            }}
+          >
+            Login
+          </button>
+          
+          <p style={{ marginTop: '12px', fontSize: '13px', color: '#6c757d' }}>
+            Try: john@fixbuddy.com / password123
+          </p>
+        </div>
+
+        {/* Register Form */}
+        <div style={{
+          padding: '24px',
+          backgroundColor: '#f8f9fa',
+          borderRadius: '8px',
+          border: '1px solid #dee2e6'
+        }}>
+          <h3 style={{ fontWeight: 'bold', marginBottom: '16px', fontSize: '20px' }}>
+            📝 Register
+          </h3>
+          
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>
+              Username:
+            </label>
+            <input
+              type="text"
+              value={registerUsername}
+              onChange={(e) => setRegisterUsername(e.target.value)}
+              placeholder="johndoe"
+              style={{
+                width: '100%',
+                padding: '10px',
+                border: '1px solid #ced4da',
+                borderRadius: '6px',
+                fontSize: '16px'
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>
+              Email:
+            </label>
+            <input
+              type="email"
+              value={registerEmail}
+              onChange={(e) => setRegisterEmail(e.target.value)}
+              placeholder="john@example.com"
+              style={{
+                width: '100%',
+                padding: '10px',
+                border: '1px solid #ced4da',
+                borderRadius: '6px',
+                fontSize: '16px'
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontWeight: '500' }}>
+              Password:
+            </label>
+            <input
+              type="password"
+              value={registerPassword}
+              onChange={(e) => setRegisterPassword(e.target.value)}
+              placeholder="password123"
+              style={{
+                width: '100%',
+                padding: '10px',
+                border: '1px solid #ced4da',
+                borderRadius: '6px',
+                fontSize: '16px'
+              }}
+            />
+          </div>
+
+          <button
+            onClick={testRegister}
+            disabled={loading}
+            style={{
+              width: '100%',
+              padding: '12px 24px',
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              fontSize: '16px',
+              fontWeight: '500'
+            }}
+          >
+            Register
+          </button>
+        </div>
+      </div>
+
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-        <button
-          onClick={testRegister}
-          disabled={loading}
-          style={{
-            padding: '12px 24px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            fontSize: '16px',
-            fontWeight: '500'
-          }}
-        >
-          Test Register
-        </button>
-
-        <button
-          onClick={testLogin}
-          disabled={loading}
-          style={{
-            padding: '12px 24px',
-            backgroundColor: '#28a745',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: loading ? 'not-allowed' : 'pointer',
-            fontSize: '16px',
-            fontWeight: '500'
-          }}
-        >
-          Test Login
-        </button>
-
         <button
           onClick={testGetMe}
           disabled={loading}
@@ -210,23 +355,21 @@ export default function AuthTest() {
             fontWeight: '500'
           }}
         >
-          Test Logout
+          Logout
         </button>
       </div>
 
       <div style={{ marginTop: '40px', padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
-        <h3 style={{ fontWeight: 'bold', marginBottom: '10px' }}>Instructions:</h3>
-        <ol style={{ paddingLeft: '20px' }}>
-          <li><strong>Click "Test Register"</strong> first to create a new user (auto-login)</li>
-          <li>Click "Get Current User" to verify you're authenticated</li>
-          <li>Click "Test Logout" to clear the session</li>
-          <li>Click "Test Login" to login again with the same credentials</li>
-        </ol>
-        <p style={{ marginTop: '16px', fontSize: '14px', color: '#6c757d' }}>
-          <strong>Current test email:</strong> {testEmail}
-        </p>
+        <h3 style={{ fontWeight: 'bold', marginBottom: '10px' }}>Seeded Users:</h3>
+        <ul style={{ paddingLeft: '20px', marginBottom: '16px' }}>
+          <li>john@fixbuddy.com (850 reputation)</li>
+          <li>sarah@fixbuddy.com (620 reputation)</li>
+          <li>mike@fixbuddy.com (450 reputation)</li>
+          <li>lisa@fixbuddy.com (280 reputation)</li>
+          <li>david@fixbuddy.com (50 reputation)</li>
+        </ul>
         <p style={{ fontSize: '14px', color: '#6c757d' }}>
-          Note: Make sure MongoDB is running on localhost:27017
+          All seeded users have password: <strong>password123</strong>
         </p>
       </div>
     </div>

@@ -21,17 +21,26 @@ export default function QuestionsTest() {
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<any>(null);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalPages: 1,
+    totalQuestions: 0,
+    limit: 20
+  });
+  const [currentSort, setCurrentSort] = useState('newest');
 
   // Test: Get all questions
-  const testGetQuestions = async () => {
+  const testGetQuestions = async (page = 1, sort = currentSort) => {
     setLoading(true);
     try {
-      const response = await fetch('/api/questions?sort=newest&limit=5');
+      const response = await fetch(`/api/questions?sort=${sort}&limit=20&page=${page}`);
       const data = await response.json();
       
       if (data.success) {
-        setMessage(`✅ Found ${data.pagination.totalQuestions} questions`);
+        setMessage(`✅ Found ${data.pagination.totalQuestions} questions (Page ${page} of ${data.pagination.totalPages})`);
         setQuestions(data.questions);
+        setPagination(data.pagination);
+        setCurrentSort(sort);
       } else {
         setMessage(`❌ ${data.message}`);
       }
@@ -40,6 +49,11 @@ export default function QuestionsTest() {
     }
     setLoading(false);
   };
+
+  // Load questions on mount
+  useEffect(() => {
+    testGetQuestions();
+  }, []);
 
   // Test: Create question
   const testCreateQuestion = async () => {
@@ -176,11 +190,11 @@ export default function QuestionsTest() {
       {/* Action Buttons */}
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '30px' }}>
         <button
-          onClick={testGetQuestions}
+          onClick={() => testGetQuestions(1, 'newest')}
           disabled={loading}
           style={{
             padding: '12px 24px',
-            backgroundColor: '#007bff',
+            backgroundColor: currentSort === 'newest' ? '#0056b3' : '#007bff',
             color: 'white',
             border: 'none',
             borderRadius: '6px',
@@ -188,7 +202,39 @@ export default function QuestionsTest() {
             fontSize: '16px'
           }}
         >
-          Get All Questions
+          Newest
+        </button>
+
+        <button
+          onClick={() => testGetQuestions(1, 'popular')}
+          disabled={loading}
+          style={{
+            padding: '12px 24px',
+            backgroundColor: currentSort === 'popular' ? '#0056b3' : '#007bff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            fontSize: '16px'
+          }}
+        >
+          Popular
+        </button>
+
+        <button
+          onClick={() => testGetQuestions(1, 'unanswered')}
+          disabled={loading}
+          style={{
+            padding: '12px 24px',
+            backgroundColor: currentSort === 'unanswered' ? '#0056b3' : '#007bff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            fontSize: '16px'
+          }}
+        >
+          Unanswered
         </button>
 
         <button
@@ -314,58 +360,110 @@ export default function QuestionsTest() {
 
       {/* Questions List */}
       <h3 style={{ fontWeight: 'bold', marginBottom: '15px', fontSize: '24px' }}>
-        Questions List ({questions.length})
+        Questions List ({pagination.totalQuestions} total)
       </h3>
 
       {questions.length === 0 ? (
         <p style={{ color: '#6c757d', fontStyle: 'italic' }}>
-          No questions yet. Click "Create Question" to add one.
+          No questions found. Click "Create Question" to add one or run: npm run seed
         </p>
       ) : (
-        <div style={{ display: 'grid', gap: '16px' }}>
-          {questions.map((q) => (
-            <div
-              key={q._id}
-              onClick={() => testGetQuestionById(q._id)}
-              style={{
-                padding: '20px',
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-                backgroundColor: 'white'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-                e.currentTarget.style.borderColor = '#007bff';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = 'none';
-                e.currentTarget.style.borderColor = '#ddd';
-              }}
-            >
-              <h4 style={{ fontWeight: 'bold', marginBottom: '8px' }}>{q.title}</h4>
-              <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                {q.tags?.slice(0, 3).map((tag) => (
-                  <span key={tag.slug} style={{
-                    padding: '2px 8px',
-                    backgroundColor: '#e9ecef',
-                    borderRadius: '8px',
-                    fontSize: '12px'
-                  }}>
-                    {tag.name}
-                  </span>
-                ))}
+        <>
+          <div style={{ display: 'grid', gap: '16px' }}>
+            {questions.map((q) => (
+              <div
+                key={q._id}
+                onClick={() => testGetQuestionById(q._id)}
+                style={{
+                  padding: '20px',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  backgroundColor: 'white'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                  e.currentTarget.style.borderColor = '#007bff';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.borderColor = '#ddd';
+                }}
+              >
+                <h4 style={{ fontWeight: 'bold', marginBottom: '8px' }}>{q.title}</h4>
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                  {q.tags?.slice(0, 3).map((tag) => (
+                    <span key={tag.slug} style={{
+                      padding: '2px 8px',
+                      backgroundColor: '#e9ecef',
+                      borderRadius: '8px',
+                      fontSize: '12px'
+                    }}>
+                      {tag.name}
+                    </span>
+                  ))}
+                </div>
+                <div style={{ display: 'flex', gap: '16px', fontSize: '14px', color: '#6c757d' }}>
+                  <span>👁️ {q.views}</span>
+                  <span>⬆️ {q.votes}</span>
+                  <span>💬 {q.answerCount || 0}</span>
+                  <span>👤 {q.author ? `${q.author.username} (${q.author.reputation} rep)` : 'Unknown user'}</span>
+                </div>
               </div>
-              <div style={{ display: 'flex', gap: '16px', fontSize: '14px', color: '#6c757d' }}>
-                <span>👁️ {q.views}</span>
-                <span>⬆️ {q.votes}</span>
-                <span>💬 {q.answerCount || 0}</span>
-                <span>👤 {q.author ? `${q.author.username} (${q.author.reputation} rep)` : 'Unknown user'}</span>
-              </div>
+            ))}
+          </div>
+
+          {/* Pagination Controls */}
+          {pagination.totalPages > 1 && (
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '12px',
+              marginTop: '30px',
+              padding: '20px'
+            }}>
+              <button
+                onClick={() => testGetQuestions(pagination.currentPage - 1)}
+                disabled={pagination.currentPage === 1 || loading}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: pagination.currentPage === 1 ? '#e9ecef' : '#007bff',
+                  color: pagination.currentPage === 1 ? '#6c757d' : 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: pagination.currentPage === 1 ? 'not-allowed' : 'pointer',
+                  fontSize: '16px',
+                  fontWeight: '500'
+                }}
+              >
+                ← Previous
+              </button>
+
+              <span style={{ fontSize: '16px', color: '#6c757d' }}>
+                Page {pagination.currentPage} of {pagination.totalPages}
+              </span>
+
+              <button
+                onClick={() => testGetQuestions(pagination.currentPage + 1)}
+                disabled={pagination.currentPage === pagination.totalPages || loading}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: pagination.currentPage === pagination.totalPages ? '#e9ecef' : '#007bff',
+                  color: pagination.currentPage === pagination.totalPages ? '#6c757d' : 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: pagination.currentPage === pagination.totalPages ? 'not-allowed' : 'pointer',
+                  fontSize: '16px',
+                  fontWeight: '500'
+                }}
+              >
+                Next →
+              </button>
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
 
       {/* Instructions */}
