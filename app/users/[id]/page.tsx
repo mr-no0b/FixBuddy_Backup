@@ -211,15 +211,7 @@ export default function UserProfilePage() {
                   {/* Recent Questions */}
                   {activity?.recentQuestions && activity.recentQuestions.length > 0 && (
                     <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-bold text-gray-900">Recent Questions</h3>
-                        <Link
-                          href={`/api/users/${userId}/questions`}
-                          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                        >
-                          View all →
-                        </Link>
-                      </div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-4">All Questions</h3>
                       <div className="space-y-4">
                         {activity.recentQuestions.map((question) => (
                           <QuestionCard key={question._id} question={question} />
@@ -231,15 +223,7 @@ export default function UserProfilePage() {
                   {/* Recent Answers */}
                   {activity?.recentAnswers && activity.recentAnswers.length > 0 && (
                     <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6">
-                      <div className="flex justify-between items-center mb-4">
-                        <h3 className="text-lg font-bold text-gray-900">Recent Answers</h3>
-                        <Link
-                          href={`/api/users/${userId}/answers`}
-                          className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                        >
-                          View all →
-                        </Link>
-                      </div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-4">All Answers</h3>
                       <div className="space-y-4">
                         {activity.recentAnswers.map((answer) => (
                           <div

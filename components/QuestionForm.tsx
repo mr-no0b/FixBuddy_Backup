@@ -357,8 +357,8 @@ export default function QuestionForm({
                   onClick={() => handleAddTag(tag.name)}
                   className="w-full flex items-center px-4 py-2 hover:bg-gray-100 transition text-left"
                 >
-                  {tag.icon && <span className="mr-2">{tag.icon}</span>}
-                  <span className="font-medium">{tag.name}</span>
+                  {tag.icon && <span className="mr-2 text-gray-900">{tag.icon}</span>}
+                  <span className="font-medium text-gray-900">{tag.name}</span>
                   <span className="ml-auto text-xs text-gray-500">
                     {tag.usageCount} questions
                   </span>
@@ -369,7 +369,7 @@ export default function QuestionForm({
         </div>
         
         <p className="mt-2 text-sm text-gray-500">
-          Add tags to describe what your question is about (e.g., refrigerator, washing-machine, diy)
+          Add tags to describe what your question is about. Type and press Enter or comma to add. You can add existing tags or create new ones.
         </p>
       </div>
 

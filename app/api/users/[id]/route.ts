@@ -57,7 +57,6 @@ async function getUserProfileHandler(
     if (includeActivity) {
       const recentQuestions = await Question.find({ author: userId })
         .sort({ createdAt: -1 })
-        .limit(5)
         .populate('author', 'username avatar reputation')
         .populate('tags', 'name slug')
         .select('title votes views answers status createdAt')
@@ -65,7 +64,6 @@ async function getUserProfileHandler(
 
       const recentAnswers = await Answer.find({ author: userId })
         .sort({ createdAt: -1 })
-        .limit(5)
         .populate('question', 'title')
         .select('content votes isAccepted createdAt')
         .lean();
