@@ -101,7 +101,7 @@ export default function RichTextEditor({
             type="button"
             onClick={handleBold}
             disabled={disabled}
-            className="p-2 hover:bg-gray-200 rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 hover:bg-gray-200 rounded transition disabled:opacity-50 disabled:cursor-not-allowed text-gray-900"
             title="Bold (Ctrl+B)"
           >
             <strong className="text-sm">B</strong>
@@ -110,7 +110,7 @@ export default function RichTextEditor({
             type="button"
             onClick={handleItalic}
             disabled={disabled}
-            className="p-2 hover:bg-gray-200 rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 hover:bg-gray-200 rounded transition disabled:opacity-50 disabled:cursor-not-allowed text-gray-900"
             title="Italic (Ctrl+I)"
           >
             <em className="text-sm">I</em>
@@ -119,7 +119,7 @@ export default function RichTextEditor({
             type="button"
             onClick={handleHeading}
             disabled={disabled}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 hover:bg-gray-200 rounded transition text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed text-gray-900"
             title="Heading"
           >
             H
@@ -134,7 +134,7 @@ export default function RichTextEditor({
             type="button"
             onClick={handleBulletList}
             disabled={disabled}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 hover:bg-gray-200 rounded transition text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed text-gray-900"
             title="Bullet List"
           >
             • List
@@ -143,7 +143,7 @@ export default function RichTextEditor({
             type="button"
             onClick={handleNumberedList}
             disabled={disabled}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 hover:bg-gray-200 rounded transition text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed text-gray-900"
             title="Numbered List"
           >
             1. List
@@ -158,7 +158,7 @@ export default function RichTextEditor({
             type="button"
             onClick={handleCode}
             disabled={disabled}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm font-mono disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 hover:bg-gray-200 rounded transition text-sm font-mono font-semibold disabled:opacity-50 disabled:cursor-not-allowed text-gray-900"
             title="Inline Code"
           >
             {'</>'}
@@ -167,7 +167,7 @@ export default function RichTextEditor({
             type="button"
             onClick={handleCodeBlock}
             disabled={disabled}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 hover:bg-gray-200 rounded transition text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed text-gray-900"
             title="Code Block"
           >
             ```
@@ -176,7 +176,7 @@ export default function RichTextEditor({
             type="button"
             onClick={handleQuote}
             disabled={disabled}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 hover:bg-gray-200 rounded transition text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed text-gray-900"
             title="Quote"
           >
             &ldquo;
@@ -191,7 +191,7 @@ export default function RichTextEditor({
             type="button"
             onClick={handleLink}
             disabled={disabled}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 hover:bg-gray-200 rounded transition text-base disabled:opacity-50 disabled:cursor-not-allowed"
             title="Link"
           >
             🔗
@@ -200,7 +200,7 @@ export default function RichTextEditor({
             type="button"
             onClick={handleImage}
             disabled={disabled}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-2 hover:bg-gray-200 rounded transition text-base disabled:opacity-50 disabled:cursor-not-allowed"
             title="Image"
           >
             🖼️
@@ -240,7 +240,7 @@ export default function RichTextEditor({
             onChange={(e) => onChange(e.target.value)}
             placeholder={placeholder}
             disabled={disabled}
-            className="w-full p-4 resize-y focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed font-mono text-sm"
+            className="w-full p-4 resize-y focus:outline-none disabled:bg-gray-50 disabled:cursor-not-allowed font-mono text-sm text-gray-900 placeholder:text-gray-400"
             style={{ minHeight }}
             onKeyDown={(e) => {
               // Keyboard shortcuts

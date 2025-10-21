@@ -209,7 +209,7 @@ export default function CommentSection({
                     <span className="text-xs text-gray-400">(edited)</span>
                   )}
                 </div>
-                <p className="text-sm text-gray-700 break-words">
+                <p className="text-sm text-gray-900 break-words">
                   {comment.content}
                 </p>
               </div>
@@ -233,7 +233,7 @@ export default function CommentSection({
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Add a comment... (5-500 characters)"
-              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-gray-900 placeholder:text-gray-400"
               rows={3}
               maxLength={500}
               disabled={submitting}

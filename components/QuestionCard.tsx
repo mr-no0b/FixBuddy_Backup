@@ -63,10 +63,12 @@ export default function QuestionCard({
     });
   };
 
-  // Create excerpt from content
+  // Create excerpt from content (strip HTML tags)
   const getExcerpt = (text: string, maxLength: number = 150) => {
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength).trim() + '...';
+    // Strip HTML tags
+    const stripped = text.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+    if (stripped.length <= maxLength) return stripped;
+    return stripped.substring(0, maxLength).trim() + '...';
   };
 
   // Status badge styling
@@ -142,8 +144,8 @@ export default function QuestionCard({
           </Link>
 
           {/* Excerpt */}
-          {showExcerpt && !compact && (
-            <p className="mt-2 text-sm text-gray-600 line-clamp-2">
+          {showExcerpt && !compact && question.content && (
+            <p className="mt-2 text-sm text-gray-800 line-clamp-2 leading-relaxed">
               {getExcerpt(question.content)}
             </p>
           )}

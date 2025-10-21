@@ -198,7 +198,7 @@ export default function QuestionForm({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="e.g., How to fix my refrigerator not cooling properly?"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder:text-gray-400"
           disabled={loading}
           maxLength={200}
         />
@@ -226,10 +226,10 @@ export default function QuestionForm({
               const newContent = content.substring(0, start) + `**${selectedText}**` + content.substring(end);
               setContent(newContent);
             }}
-            className="p-2 hover:bg-gray-200 rounded transition"
+            className="p-2 hover:bg-gray-200 rounded transition text-gray-900 font-bold"
             title="Bold"
           >
-            <strong>B</strong>
+            <strong className="text-base">B</strong>
           </button>
           <button
             type="button"
@@ -241,10 +241,10 @@ export default function QuestionForm({
               const newContent = content.substring(0, start) + `*${selectedText}*` + content.substring(end);
               setContent(newContent);
             }}
-            className="p-2 hover:bg-gray-200 rounded transition"
+            className="p-2 hover:bg-gray-200 rounded transition text-gray-900 font-semibold"
             title="Italic"
           >
-            <em>I</em>
+            <em className="text-base">I</em>
           </button>
           <div className="w-px h-6 bg-gray-300 mx-1"></div>
           <button
@@ -255,7 +255,7 @@ export default function QuestionForm({
               const newContent = content.substring(0, start) + '\n- ' + content.substring(start);
               setContent(newContent);
             }}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm"
+            className="p-2 hover:bg-gray-200 rounded transition text-sm font-medium text-gray-900"
             title="Bullet List"
           >
             • List
@@ -268,7 +268,7 @@ export default function QuestionForm({
               const newContent = content.substring(0, start) + '\n1. ' + content.substring(start);
               setContent(newContent);
             }}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm"
+            className="p-2 hover:bg-gray-200 rounded transition text-sm font-medium text-gray-900"
             title="Numbered List"
           >
             1. List
@@ -283,7 +283,7 @@ export default function QuestionForm({
               const newContent = content.substring(0, start) + `\`${selectedText}\`` + content.substring(end);
               setContent(newContent);
             }}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm font-mono"
+            className="p-2 hover:bg-gray-200 rounded transition text-sm font-mono font-semibold text-gray-900"
             title="Code"
           >
             {'</>'}
@@ -295,7 +295,7 @@ export default function QuestionForm({
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Describe your problem in detail. Include what you've already tried, error messages, appliance model, etc."
-          className="w-full px-4 py-3 border border-gray-300 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+          className="w-full px-4 py-3 border border-gray-300 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical text-gray-900 placeholder:text-gray-400"
           rows={12}
           disabled={loading}
           maxLength={5000}
@@ -343,7 +343,7 @@ export default function QuestionForm({
             onFocus={() => tagInput && setShowTagSuggestions(true)}
             onBlur={() => setTimeout(() => setShowTagSuggestions(false), 200)}
             placeholder="Type to search or add tags (press Enter or comma to add)"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder:text-gray-400"
             disabled={loading || selectedTags.length >= 5}
           />
 

@@ -103,7 +103,7 @@ export default function RegisterForm({ onSuccess, redirectTo = '/' }: RegisterFo
             id="username"
             value={formData.username}
             onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder:text-gray-400 ${
               errors.username ? 'border-red-300' : 'border-gray-300'
             }`}
             placeholder="john_doe"
@@ -125,7 +125,7 @@ export default function RegisterForm({ onSuccess, redirectTo = '/' }: RegisterFo
             id="email"
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder:text-gray-400 ${
               errors.email ? 'border-red-300' : 'border-gray-300'
             }`}
             placeholder="john@example.com"
@@ -147,7 +147,7 @@ export default function RegisterForm({ onSuccess, redirectTo = '/' }: RegisterFo
             id="password"
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder:text-gray-400 ${
               errors.password ? 'border-red-300' : 'border-gray-300'
             }`}
             placeholder="••••••••"
@@ -169,7 +169,7 @@ export default function RegisterForm({ onSuccess, redirectTo = '/' }: RegisterFo
             id="confirmPassword"
             value={formData.confirmPassword}
             onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder:text-gray-400 ${
               errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
             }`}
             placeholder="••••••••"
