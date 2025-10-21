@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 
 interface LoginFormProps {
@@ -11,6 +12,7 @@ interface LoginFormProps {
 
 export default function LoginForm({ onSuccess, redirectTo = '/' }: LoginFormProps) {
   const router = useRouter();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -35,18 +37,7 @@ export default function LoginForm({ onSuccess, redirectTo = '/' }: LoginFormProp
 
     try {
       setLoading(true);
-
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
+      await login(formData.email, formData.password);
 
       // Success
       if (onSuccess) {

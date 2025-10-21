@@ -3,40 +3,14 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
-interface User {
-  id: string;
-  username: string;
-  email: string;
-  reputation: number;
-  avatar?: string;
-}
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Navbar() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, logout } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const [loading, setLoading] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-
-  // Load current user
-  useEffect(() => {
-    const loadUser = async () => {
-      try {
-        const response = await fetch('/api/auth/me');
-        const data = await response.json();
-        if (data.success) {
-          setUser(data.user);
-        }
-      } catch (error) {
-        console.error('Error loading user');
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadUser();
-  }, []);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -65,10 +39,10 @@ export default function Navbar() {
   // Handle logout
   const handleLogout = async () => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      setUser(null);
+      await logout();
       setShowUserMenu(false);
       router.push('/');
+      router.refresh();
     } catch (error) {
       console.error('Error logging out');
     }
@@ -118,9 +92,7 @@ export default function Navbar() {
 
           {/* Right Side - Auth Buttons or User Menu */}
           <div className="flex items-center space-x-3">
-            {loading ? (
-              <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-            ) : user ? (
+            {user ? (
               <>
                 {/* Ask Question Button */}
                 <Link
@@ -201,7 +173,7 @@ export default function Navbar() {
                       </div>
 
                       <Link
-                        href={`/users/${user.id}`}
+                        href={`/users/${user._id}`}
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                         onClick={() => setShowUserMenu(false)}
                       >

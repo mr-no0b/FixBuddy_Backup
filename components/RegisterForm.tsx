@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 
 interface RegisterFormProps {
@@ -11,6 +12,7 @@ interface RegisterFormProps {
 
 export default function RegisterForm({ onSuccess, redirectTo = '/' }: RegisterFormProps) {
   const router = useRouter();
+  const { register } = useAuth();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -20,38 +22,26 @@ export default function RegisterForm({ onSuccess, redirectTo = '/' }: RegisterFo
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const validate = () => {
+  const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    // Username validation
-    if (!formData.username) {
-      newErrors.username = 'Username is required';
-    } else if (formData.username.length < 3) {
+    if (!formData.username || formData.username.length < 3) {
       newErrors.username = 'Username must be at least 3 characters';
-    } else if (formData.username.length > 20) {
-      newErrors.username = 'Username must be less than 20 characters';
-    } else if (!/^[a-zA-Z0-9_]+$/.test(formData.username)) {
-      newErrors.username = 'Username can only contain letters, numbers, and underscores';
     }
 
-    // Email validation
     if (!formData.email) {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
 
-    // Confirm password validation
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
-    } else if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
 
@@ -61,31 +51,17 @@ export default function RegisterForm({ onSuccess, redirectTo = '/' }: RegisterFo
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({});
 
-    if (!validate()) {
+    if (!validateForm()) {
       return;
     }
 
     try {
       setLoading(true);
+      await register(formData.username, formData.email, formData.password);
 
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
-
-      // Success - auto login
+      // Success
       if (onSuccess) {
         onSuccess();
       } else {
@@ -94,7 +70,7 @@ export default function RegisterForm({ onSuccess, redirectTo = '/' }: RegisterFo
       }
     } catch (err) {
       setErrors({
-        general: err instanceof Error ? err.message : 'Registration failed. Please try again.'
+        submit: err instanceof Error ? err.message : 'Registration failed. Please try again.'
       });
     } finally {
       setLoading(false);
@@ -111,9 +87,9 @@ export default function RegisterForm({ onSuccess, redirectTo = '/' }: RegisterFo
         </div>
 
         {/* General Error */}
-        {errors.general && (
+        {errors.submit && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-600">{errors.general}</p>
+            <p className="text-sm text-red-600">{errors.submit}</p>
           </div>
         )}
 
