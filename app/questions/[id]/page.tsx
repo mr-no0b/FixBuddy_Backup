@@ -142,16 +142,34 @@ export default function QuestionDetailPage() {
   };
 
   // Handle answer accepted
-  const handleAnswerAccepted = (answerId: string) => {
+  const handleAnswerAccepted = async (answerId: string) => {
     if (!question) return;
     
-    setQuestion({
-      ...question,
-      answers: question.answers.map(answer => ({
-        ...answer,
-        isAccepted: answer._id === answerId
-      }))
-    });
+    try {
+      const response = await fetch(`/api/answers/${answerId}/accept`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Update local state with the accepted answer
+        setQuestion({
+          ...question,
+          answers: question.answers.map(answer => ({
+            ...answer,
+            isAccepted: answer._id === answerId
+          }))
+        });
+      } else {
+        console.error('Failed to accept answer:', data.message);
+        alert(data.message || 'Failed to accept answer');
+      }
+    } catch (error) {
+      console.error('Error accepting answer:', error);
+      alert('Failed to accept answer');
+    }
   };
 
   if (loading) {
