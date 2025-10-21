@@ -18,9 +18,17 @@ interface User {
   reputation: number;
 }
 
+interface Stats {
+  questions: number;
+  answers: number;
+  users: number;
+  tags: number;
+}
+
 export default function Sidebar() {
   const [tags, setTags] = useState<Tag[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+  const [stats, setStats] = useState<Stats>({ questions: 0, answers: 0, users: 0, tags: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -38,6 +46,13 @@ export default function Sidebar() {
         const usersData = await usersResponse.json();
         if (usersData.success) {
           setUsers(usersData.users);
+        }
+
+        // Fetch community stats
+        const statsResponse = await fetch('/api/stats');
+        const statsData = await statsResponse.json();
+        if (statsData.success) {
+          setStats(statsData.stats);
         }
       } catch (error) {
         console.error('Error loading sidebar data');
@@ -215,19 +230,19 @@ export default function Sidebar() {
         <div className="space-y-2 text-xs text-gray-600">
           <div className="flex justify-between">
             <span>Questions:</span>
-            <span className="font-semibold text-gray-900">1,234+</span>
+            <span className="font-semibold text-gray-900">{stats.questions.toLocaleString()}</span>
           </div>
           <div className="flex justify-between">
             <span>Answers:</span>
-            <span className="font-semibold text-gray-900">3,456+</span>
+            <span className="font-semibold text-gray-900">{stats.answers.toLocaleString()}</span>
           </div>
           <div className="flex justify-between">
             <span>Users:</span>
-            <span className="font-semibold text-gray-900">567+</span>
+            <span className="font-semibold text-gray-900">{stats.users.toLocaleString()}</span>
           </div>
           <div className="flex justify-between">
             <span>Tags:</span>
-            <span className="font-semibold text-gray-900">{tags.length}</span>
+            <span className="font-semibold text-gray-900">{stats.tags.toLocaleString()}</span>
           </div>
         </div>
       </div>
