@@ -273,6 +273,7 @@ async function seed() {
       const question = questions[i];
       const numAnswers = Math.floor(Math.random() * 4) + 1; // 1-4 answers per question
       
+      const createdAnswers = [];
       for (let j = 0; j < numAnswers; j++) {
         const answerer = users[(i + j + 1) % users.length]; // Different user than question author
         
@@ -283,6 +284,9 @@ async function seed() {
           `I'm a professional technician and see this issue frequently. The most common cause is wear and tear on internal components. You have a few options:\n\n**DIY Repair:** Follow these steps...\n**Professional Repair:** Cost would be around $150-$200\n**Replacement:** Consider if unit is over 10 years old\n\nFeel free to ask follow-up questions!`
         ];
 
+        // Randomly decide if first answer will be accepted (50% chance)
+        const willBeAccepted = j === 0 && Math.random() > 0.5;
+
         const answer = await Answer.create({
           content: answerContents[j % answerContents.length],
           author: answerer._id,
@@ -290,22 +294,26 @@ async function seed() {
           votes: Math.floor(Math.random() * 15),
           upvotedBy: [],
           downvotedBy: [],
-          isAccepted: j === 0 && Math.random() > 0.5, // 50% chance first answer is accepted
+          isAccepted: willBeAccepted,
           createdAt: new Date(question.createdAt.getTime() + (j + 1) * 2 * 60 * 60 * 1000) // Answers come after question
         });
 
-        // If answer is accepted, update question status and give reputation
-        if (answer.isAccepted) {
-          question.status = 'solved';
+        createdAnswers.push(answer);
+
+        // If answer is accepted, give reputation to answerer and mark question as solved
+        if (willBeAccepted) {
           answerer.reputation += 15;
           await answerer.save();
+          question.status = 'solved';
         }
         
         answerCount++;
       }
       
+      // Add all answer IDs to the question
+      question.answers = createdAnswers.map(a => a._id) as any;
       await question.save();
-      console.log(`   ✓ Created ${numAnswers} answer(s) for question ${i + 1}`);
+      console.log(`   ✓ Created ${numAnswers} answer(s) for question ${i + 1}${question.status === 'solved' ? ' (SOLVED)' : ''}`);
     }
 
     // Create comments

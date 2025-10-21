@@ -232,20 +232,10 @@ export default function QuestionDetailPage() {
 
           {/* Question Header */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-            {/* Title and Actions */}
-            <div className="flex items-start justify-between gap-4 mb-4">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex-1">
-                {question.title}
-              </h1>
-              {isAuthor && (
-                <Link
-                  href={`/questions/${questionId}/edit`}
-                  className="px-4 py-2 text-sm text-blue-600 hover:text-blue-800 font-medium border border-blue-300 rounded-lg hover:bg-blue-50 transition"
-                >
-                  Edit
-                </Link>
-              )}
-            </div>
+            {/* Title */}
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+              {question.title}
+            </h1>
 
             {/* Meta Info */}
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
@@ -325,6 +315,14 @@ export default function QuestionDetailPage() {
                       </p>
                     </div>
                   </div>
+                  {isAuthor && (
+                    <Link
+                      href={`/questions/${questionId}/edit`}
+                      className="px-4 py-2 text-sm text-blue-600 hover:text-blue-800 font-medium border border-blue-300 rounded-lg hover:bg-blue-50 transition"
+                    >
+                      Edit Question
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

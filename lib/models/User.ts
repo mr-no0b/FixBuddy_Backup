@@ -7,6 +7,8 @@ export interface IUser extends Document {
   avatar?: string;
   reputation: number;
   bio?: string;
+  isBanned: boolean;
+  bannedAt?: Date;
   createdAt: Date;
   lastActiveAt: Date;
 }
@@ -45,6 +47,14 @@ const UserSchema: Schema<IUser> = new Schema({
     type: String,
     maxlength: [500, 'Bio cannot exceed 500 characters'],
     default: ''
+  },
+  isBanned: {
+    type: Boolean,
+    default: false
+  },
+  bannedAt: {
+    type: Date,
+    default: null
   },
   createdAt: {
     type: Date,

@@ -17,6 +17,15 @@ async function createAnswerCommentHandler(
       return errorResponse('Authentication required', HTTP_STATUS.UNAUTHORIZED);
     }
 
+    // Check if user is banned
+    const user = await User.findById(userId);
+    if (!user) {
+      return errorResponse('User not found', HTTP_STATUS.NOT_FOUND);
+    }
+    if (user.isBanned) {
+      return errorResponse('Your account has been banned. You cannot post comments.', HTTP_STATUS.FORBIDDEN);
+    }
+
     const answerId = context?.params?.id;
     if (!answerId) {
       return errorResponse('Answer ID is required', HTTP_STATUS.BAD_REQUEST);
