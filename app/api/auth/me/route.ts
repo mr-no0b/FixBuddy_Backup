@@ -31,7 +31,7 @@ async function handler(req: AuthRequest) {
       {
         success: true,
         user: {
-          id: user._id,
+          _id: user._id,
           username: user.username,
           email: user.email,
           reputation: user.reputation,

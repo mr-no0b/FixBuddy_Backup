@@ -173,7 +173,7 @@ export default function Navbar() {
                       </div>
 
                       <Link
-                        href={`/users/${user._id}`}
+                        href={user._id ? `/users/${user._id}` : '#'}
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
                         onClick={() => setShowUserMenu(false)}
                       >

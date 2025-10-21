@@ -58,6 +58,7 @@ async function getUserProfileHandler(
       const recentQuestions = await Question.find({ author: userId })
         .sort({ createdAt: -1 })
         .limit(5)
+        .populate('author', 'username avatar reputation')
         .populate('tags', 'name slug')
         .select('title votes views answers status createdAt')
         .lean();
