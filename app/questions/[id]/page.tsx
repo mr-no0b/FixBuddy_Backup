@@ -11,7 +11,7 @@ import {
   UserAvatar,
   AnswerCard,
   CommentSection,
-  RichTextEditor
+  SimpleTextArea
 } from '@/components';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
@@ -380,11 +380,12 @@ export default function QuestionDetailPage() {
                 </div>
               )}
 
-              <RichTextEditor
+              <SimpleTextArea
                 value={answerContent}
                 onChange={setAnswerContent}
-                placeholder="Write your answer here... Use markdown for formatting."
-                minHeight="200px"
+                placeholder="Write your answer here... Provide detailed steps and explanations to help solve the problem."
+                rows={8}
+                disabled={submittingAnswer}
               />
 
               <div className="mt-4 flex items-center justify-between">

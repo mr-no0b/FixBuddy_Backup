@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { Navbar, QuestionCard, LoadingSpinner, ErrorBoundary, TagBadge } from '@/components';
+import { Navbar, Sidebar, QuestionCard, LoadingSpinner, ErrorBoundary, TagBadge } from '@/components';
 import Link from 'next/link';
 
 interface Tag {
@@ -95,9 +95,11 @@ export default function TagDetailPage() {
   if (loading) {
     return (
       <ErrorBoundary>
-        <Navbar />
-        <div className="flex justify-center items-center min-h-screen">
-          <LoadingSpinner size="lg" />
+        <div className="min-h-screen bg-gray-50">
+          <Navbar />
+          <div className="flex justify-center items-center min-h-[60vh]">
+            <LoadingSpinner size="lg" />
+          </div>
         </div>
       </ErrorBoundary>
     );
@@ -106,19 +108,21 @@ export default function TagDetailPage() {
   if (error || !tag) {
     return (
       <ErrorBoundary>
-        <Navbar />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-            <h2 className="text-xl font-bold text-red-800 mb-2">Tag Not Found</h2>
-            <p className="text-red-700 mb-4">
-              {error || 'The tag you are looking for does not exist.'}
-            </p>
-            <Link
-              href="/tags"
-              className="inline-block px-6 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition"
-            >
-              Browse All Tags
-            </Link>
+        <div className="min-h-screen bg-gray-50">
+          <Navbar />
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+              <h2 className="text-xl font-bold text-red-800 mb-2">Tag Not Found</h2>
+              <p className="text-red-700 mb-4">
+                {error || 'The tag you are looking for does not exist.'}
+              </p>
+              <Link
+                href="/tags"
+                className="inline-block px-6 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition"
+              >
+                Browse All Tags
+              </Link>
+            </div>
           </div>
         </div>
       </ErrorBoundary>
@@ -127,19 +131,21 @@ export default function TagDetailPage() {
 
   return (
     <ErrorBoundary>
-      <Navbar />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-3">
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        
+        {/* Main Layout */}
+        <div className="flex max-w-[1600px] mx-auto">
+          {/* Main Content Area */}
+          <main className="flex-1 p-4 sm:p-6">
             {/* Tag Header */}
             <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 mb-6">
               <div className="flex items-start gap-4">
                 {tag.icon && (
-                  <span className="text-5xl flex-shrink-0">{tag.icon}</span>
+                  <span className="text-4xl sm:text-5xl flex-shrink-0">{tag.icon}</span>
                 )}
                 <div className="flex-1">
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                     {tag.name}
                   </h1>
                   {tag.description && (
@@ -151,7 +157,7 @@ export default function TagDetailPage() {
                       {tag.usageCount === 1 ? 'question' : 'questions'}
                     </span>
                     <Link
-                      href="/questions/ask"
+                      href="/ask"
                       className="text-blue-600 hover:text-blue-700 font-medium"
                     >
                       Ask a question about {tag.name} →
@@ -280,63 +286,25 @@ export default function TagDetailPage() {
                     : `Be the first to ask a question about ${tag.name}.`}
                 </p>
                 <Link
-                  href="/questions/ask"
+                  href="/ask"
                   className="inline-block px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition"
                 >
                   Ask a Question
                 </Link>
               </div>
             )}
-          </div>
+          </main>
 
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            {/* Related Tags */}
-            <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 mb-6 sticky top-8">
-              <h3 className="font-bold text-gray-900 mb-4">About This Tag</h3>
-              
-              <div className="space-y-4">
-                <div>
-                  <p className="text-sm text-gray-600 mb-2">
-                    Questions tagged with <strong>{tag.name}</strong> relate to issues,
-                    repairs, maintenance, and troubleshooting.
-                  </p>
-                </div>
+          {/* Sidebar - Hidden on mobile, visible on tablet+ */}
+          <aside className="hidden lg:block">
+            <Sidebar />
+          </aside>
+        </div>
 
-                <div className="pt-4 border-t border-gray-200">
-                  <h4 className="text-sm font-bold text-gray-900 mb-2">Usage Guidelines</h4>
-                  <ul className="text-sm text-gray-600 space-y-1">
-                    <li>• Be specific in your question title</li>
-                    <li>• Include model numbers if applicable</li>
-                    <li>• Describe what you've already tried</li>
-                    <li>• Add photos if relevant</li>
-                  </ul>
-                </div>
-
-                <div className="pt-4 border-t border-gray-200">
-                  <Link
-                    href="/tags"
-                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                  >
-                    Browse all tags →
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Ask Question CTA */}
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg border border-blue-200 p-6">
-              <h3 className="font-bold text-gray-900 mb-2">Have a Question?</h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Get help from our community of appliance repair experts.
-              </p>
-              <Link
-                href="/questions/ask"
-                className="block w-full px-4 py-2 bg-blue-600 text-white text-center font-medium rounded-lg hover:bg-blue-700 transition"
-              >
-                Ask a Question
-              </Link>
-            </div>
+        {/* Mobile Sidebar - Show at bottom on mobile */}
+        <div className="lg:hidden border-t border-gray-200 bg-white">
+          <div className="max-w-[1600px] mx-auto p-4">
+            <Sidebar />
           </div>
         </div>
       </div>

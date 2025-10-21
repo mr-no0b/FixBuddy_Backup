@@ -138,13 +138,6 @@ export default function LoginForm({ onSuccess, redirectTo = '/' }: LoginFormProp
             </Link>
           </p>
         </div>
-
-        {/* Quick Test Credentials */}
-        <div className="mt-6 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-xs text-blue-800 font-medium mb-1">Test Account:</p>
-          <p className="text-xs text-blue-600">Email: john@fixbuddy.com</p>
-          <p className="text-xs text-blue-600">Password: password123</p>
-        </div>
       </form>
     </div>
   );

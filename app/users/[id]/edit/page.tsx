@@ -344,21 +344,6 @@ export default function EditProfilePage() {
             </button>
           </div>
         </form>
-
-        {/* Danger Zone */}
-        <div className="mt-8 bg-white rounded-lg shadow-md border border-red-200 p-6">
-          <h3 className="text-lg font-bold text-red-800 mb-2">Danger Zone</h3>
-          <p className="text-sm text-gray-600 mb-4">
-            Once you delete your account, there is no going back. Please be certain.
-          </p>
-          <button
-            type="button"
-            className="px-6 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition"
-            onClick={() => alert('Account deletion is not yet implemented')}
-          >
-            Delete Account
-          </button>
-        </div>
       </div>
     </ErrorBoundary>
   );

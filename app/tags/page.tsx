@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Navbar, TagBadge, LoadingSpinner, ErrorBoundary } from '@/components';
+import { Navbar, Sidebar, TagBadge, LoadingSpinner, ErrorBoundary } from '@/components';
 import Link from 'next/link';
 
 interface Tag {
@@ -66,11 +66,16 @@ export default function TagsPage() {
 
   return (
     <ErrorBoundary>
-      <Navbar />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Browse Tags</h1>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        
+        {/* Main Layout */}
+        <div className="flex max-w-[1600px] mx-auto">
+          {/* Main Content Area */}
+          <main className="flex-1 p-4 sm:p-6">
+            {/* Header */}
+            <div className="mb-6">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Browse Tags</h1>
           <p className="text-gray-600">
             A tag is a keyword or label that categorizes your question with other similar questions.
             Using the right tags makes it easier for others to find and answer your question.
@@ -251,6 +256,20 @@ export default function TagsPage() {
                 leading to quicker and more accurate solutions.
               </p>
             </div>
+          </div>
+        </div>
+          </main>
+
+          {/* Sidebar - Hidden on mobile, visible on tablet+ */}
+          <aside className="hidden lg:block">
+            <Sidebar />
+          </aside>
+        </div>
+
+        {/* Mobile Sidebar - Show at bottom on mobile */}
+        <div className="lg:hidden border-t border-gray-200 bg-white">
+          <div className="max-w-[1600px] mx-auto p-4">
+            <Sidebar />
           </div>
         </div>
       </div>

@@ -32,3 +32,4 @@ export type { ToastProps } from './Toast';
 // Interactive Components
 export { default as VoteButton } from './VoteButton';
 export { default as RichTextEditor } from './RichTextEditor';
+export { default as SimpleTextArea } from './SimpleTextArea';

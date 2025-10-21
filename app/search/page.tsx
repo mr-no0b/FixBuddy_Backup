@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Navbar, QuestionCard, LoadingSpinner, ErrorBoundary, UserAvatar, TagBadge } from '@/components';
+import { Navbar, Sidebar, QuestionCard, LoadingSpinner, ErrorBoundary, UserAvatar, TagBadge } from '@/components';
 import Link from 'next/link';
 
 interface SearchResults {
@@ -86,11 +86,16 @@ export default function SearchPage() {
 
   return (
     <ErrorBoundary>
-      <Navbar />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Search Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Search</h1>
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        
+        {/* Main Layout */}
+        <div className="flex max-w-[1600px] mx-auto">
+          {/* Main Content Area */}
+          <main className="flex-1 p-4 sm:p-6">
+            {/* Search Header */}
+            <div className="mb-6">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Search</h1>
           
           {/* Search Form */}
           <form onSubmit={handleSearch} className="mb-6">
@@ -337,6 +342,20 @@ export default function SearchPage() {
             </div>
           </div>
         )}
+          </main>
+
+          {/* Sidebar - Hidden on mobile, visible on tablet+ */}
+          <aside className="hidden lg:block">
+            <Sidebar />
+          </aside>
+        </div>
+
+        {/* Mobile Sidebar - Show at bottom on mobile */}
+        <div className="lg:hidden border-t border-gray-200 bg-white">
+          <div className="max-w-[1600px] mx-auto p-4">
+            <Sidebar />
+          </div>
+        </div>
       </div>
     </ErrorBoundary>
   );

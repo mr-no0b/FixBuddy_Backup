@@ -213,89 +213,13 @@ export default function QuestionForm({
         <label className="block text-sm font-bold text-gray-900 mb-2">
           Describe Your Problem *
         </label>
-        
-        {/* Formatting Toolbar */}
-        <div className="flex items-center gap-1 p-2 bg-gray-50 border border-gray-300 rounded-t-lg border-b-0">
-          <button
-            type="button"
-            onClick={() => {
-              const textarea = document.getElementById('content') as HTMLTextAreaElement;
-              const start = textarea.selectionStart;
-              const end = textarea.selectionEnd;
-              const selectedText = content.substring(start, end);
-              const newContent = content.substring(0, start) + `**${selectedText}**` + content.substring(end);
-              setContent(newContent);
-            }}
-            className="p-2 hover:bg-gray-200 rounded transition text-gray-900 font-bold"
-            title="Bold"
-          >
-            <strong className="text-base">B</strong>
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              const textarea = document.getElementById('content') as HTMLTextAreaElement;
-              const start = textarea.selectionStart;
-              const end = textarea.selectionEnd;
-              const selectedText = content.substring(start, end);
-              const newContent = content.substring(0, start) + `*${selectedText}*` + content.substring(end);
-              setContent(newContent);
-            }}
-            className="p-2 hover:bg-gray-200 rounded transition text-gray-900 font-semibold"
-            title="Italic"
-          >
-            <em className="text-base">I</em>
-          </button>
-          <div className="w-px h-6 bg-gray-300 mx-1"></div>
-          <button
-            type="button"
-            onClick={() => {
-              const textarea = document.getElementById('content') as HTMLTextAreaElement;
-              const start = textarea.selectionStart;
-              const newContent = content.substring(0, start) + '\n- ' + content.substring(start);
-              setContent(newContent);
-            }}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm font-medium text-gray-900"
-            title="Bullet List"
-          >
-            • List
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              const textarea = document.getElementById('content') as HTMLTextAreaElement;
-              const start = textarea.selectionStart;
-              const newContent = content.substring(0, start) + '\n1. ' + content.substring(start);
-              setContent(newContent);
-            }}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm font-medium text-gray-900"
-            title="Numbered List"
-          >
-            1. List
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              const textarea = document.getElementById('content') as HTMLTextAreaElement;
-              const start = textarea.selectionStart;
-              const end = textarea.selectionEnd;
-              const selectedText = content.substring(start, end);
-              const newContent = content.substring(0, start) + `\`${selectedText}\`` + content.substring(end);
-              setContent(newContent);
-            }}
-            className="p-2 hover:bg-gray-200 rounded transition text-sm font-mono font-semibold text-gray-900"
-            title="Code"
-          >
-            {'</>'}
-          </button>
-        </div>
 
         <textarea
           id="content"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Describe your problem in detail. Include what you've already tried, error messages, appliance model, etc."
-          className="w-full px-4 py-3 border border-gray-300 rounded-b-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical text-gray-900 placeholder:text-gray-400"
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical text-gray-900 placeholder:text-gray-400"
           rows={12}
           disabled={loading}
           maxLength={5000}

@@ -55,10 +55,10 @@ export default function CommentSection({
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to fetch comments');
+        throw new Error(data.error || data.message || 'Failed to fetch comments');
       }
 
-      setComments(data.data || []);
+      setComments(data.comments || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load comments');
     } finally {
@@ -103,11 +103,11 @@ export default function CommentSection({
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to post comment');
+        throw new Error(data.error || data.message || 'Failed to post comment');
       }
 
-      // Add new comment to list
-      setComments([...comments, data.data]);
+      // Add new comment to list (API returns data.comment, not data.data)
+      setComments([...comments, data.comment]);
       setNewComment('');
       setShowForm(false);
     } catch (err) {
@@ -275,7 +275,7 @@ export default function CommentSection({
         )
       ) : (
         <p className="text-sm text-gray-500">
-          <Link href="/auth-test" className="text-blue-600 hover:underline">
+          <Link href="/login" className="text-blue-600 hover:underline">
             Login
           </Link>{' '}
           to add a comment
