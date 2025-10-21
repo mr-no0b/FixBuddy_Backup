@@ -24,3 +24,12 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Hide Next.js development indicators/overlay */
+#nextjs-portal,
+nextjs-portal,
+[data-nextjs-scroll-focus-boundary],
+[data-nextjs-dialog-overlay],
+.__next-build-watcher {
+  display: none !important;
+}
